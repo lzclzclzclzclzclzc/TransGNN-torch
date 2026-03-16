@@ -44,7 +44,7 @@ def load_finished_tasks(csv_file):
 
 def run_test():
 
-    output_file = 'Params_output.txt'
+    output_file = 'Params_output.csv'
 
     # 初始化CSV
     if not os.path.exists(output_file):

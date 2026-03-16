@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import collections
 
-def plot_from_file(filename='Params_output.txt'):
-    # 数据结构：data[param_name][value]['Recall'] = [v1, v2, ...]
+def plot_from_file(filename='Params_output.csv'):
     data = collections.defaultdict(lambda: collections.defaultdict(lambda: {'Recall': [], 'NDCG': []}))
     
     # 1. 解析文件
@@ -34,13 +33,13 @@ def plot_from_file(filename='Params_output.txt'):
         # Recall 子图
         b1 = ax1.boxplot(recall_data, labels=labels, patch_artist=True, 
                          boxprops=dict(facecolor='#AED6F1'))
-        ax1.set_title(f'Recall@20 vs {param_name}', fontsize=12)
+        ax1.set_title(f'Recall@40 vs {param_name}', fontsize=12)
         ax1.grid(axis='y', linestyle='--', alpha=0.6)
         
         # NDCG 子图
         b2 = ax2.boxplot(ndcg_data, labels=labels, patch_artist=True, 
                          boxprops=dict(facecolor='#ABEBC6'))
-        ax2.set_title(f'NDCG@20 vs {param_name}', fontsize=12)
+        ax2.set_title(f'NDCG@40 vs {param_name}', fontsize=12)
         ax2.grid(axis='y', linestyle='--', alpha=0.6)
 
         plt.suptitle(f'Parameter Sensitivity Analysis: {param_name}', fontsize=15)
