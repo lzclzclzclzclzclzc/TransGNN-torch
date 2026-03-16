@@ -1,0 +1,9 @@
+# Ignore history files
+/History/
+
+# Ignore model files
+/Models/
+
+# Ignore Python cache
+__pycache__/
+*/__pycache__/

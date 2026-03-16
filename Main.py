@@ -131,21 +131,21 @@ class Coach:
 	def saveHistory(self):
 		if args.epoch == 0:
 			return
-		with open('../History/' + args.save_path + '.his', 'wb') as fs:
+		with open('History/' + args.save_path + '.his', 'wb') as fs:
 			pickle.dump(self.metrics, fs)
 
 		content = {
 			'model': self.model,
 		}
-		t.save(content, '../Models/' + args.save_path + '.mod')
+		t.save(content, 'Models/' + args.save_path + '.mod')
 		log('Model Saved: %s' % args.save_path)
 
 	def loadModel(self):
-		ckp = t.load('../Models/' + args.load_model + '.mod')
+		ckp = t.load('Models/' + args.load_model + '.mod')
 		self.model = ckp['model']
 		self.opt = t.optim.Adam(self.model.parameters(), lr=args.lr, weight_decay=0)
 
-		with open('../History/' + args.load_model + '.his', 'rb') as fs:
+		with open('History/' + args.load_model + '.his', 'rb') as fs:
 			self.metrics = pickle.load(fs)
 		log('Model Loaded')	
 
