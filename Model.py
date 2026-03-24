@@ -8,11 +8,13 @@ from Transformer import Encoder_Layer, TransformerEncoderLayer
 class TransGNN(nn.Module):
     def __init__(self):
         super(TransGNN, self).__init__()
+        self.rm_trans = args.rmTrans
 
         self.user_embeding = nn.Parameter(nn.init.xavier_uniform_(torch.empty(args.user, args.latdim)))
         self.item_embeding = nn.Parameter(nn.init.xavier_uniform_(torch.empty(args.item, args.latdim)))
-        self.user_transformer_encoder = TransformerEncoderLayer(d_model=args.latdim, num_heads=args.num_head, dropout=args.dropout)
-        self.item_transformer_encoder = TransformerEncoderLayer(d_model=args.latdim, num_heads=args.num_head, dropout=args.dropout)
+        if not self.rm_trans:
+            self.user_transformer_encoder = TransformerEncoderLayer(d_model=args.latdim, num_heads=args.num_head, dropout=args.dropout)
+            self.item_transformer_encoder = TransformerEncoderLayer(d_model=args.latdim, num_heads=args.num_head, dropout=args.dropout)
     
 
     def user_transformer_layer(self, embeds, mask=None):
@@ -46,6 +48,11 @@ class TransGNN(nn.Module):
         embeds = [torch.concat([self.user_embeding, self.item_embeding], dim=0)]     
         for i in range(args.block_num):
             tmp_embeds = self.gnn_message_passing(adj, embeds[-1])
+
+            if self.rm_trans:
+                embeds.append(tmp_embeds)
+                continue
+
             tmp_user_embeds = tmp_embeds[:args.user]
             tmp_item_embeds = tmp_embeds[args.user:]
             tmp_user_embeds = self.user_transformer_layer(tmp_user_embeds)

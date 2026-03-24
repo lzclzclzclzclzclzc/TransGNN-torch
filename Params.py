@@ -28,6 +28,9 @@ def ParseArgs():
 	parser.add_argument('--num_head', default=4, type=int, help='Multihead number of transformer layer')
 	parser.add_argument('--edgeSampRate', default=0.1, type=float, help='Ratio of sampled edges')
 	parser.add_argument('--block_num', default=2, type=int, help='number of hops in gcn precessing')
+	parser.add_argument('-rmTrans', '--rmTrans', nargs='?', const=True, default=False,
+						type=lambda x: str(x).lower() in ['true', '1', 'yes'],
+						help='remove all transformer modules and keep gnn-only model')
 
 	return parser.parse_args()
 args = ParseArgs()
