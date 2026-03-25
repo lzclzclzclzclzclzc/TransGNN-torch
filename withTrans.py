@@ -15,14 +15,14 @@ METRIC_PATTERN = re.compile(
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Run TransGNN without Transformer (rmTrans) for block_num=1..4, each repeated 10 times."
+        description="Run TransGNN WITH Transformer for block_num=1..4, each repeated N times."
     )
     parser.add_argument("--repeats", type=int, default=2, help="runs per layer")
-    parser.add_argument("--layers", type=str, default="1,2,3,4,5,6,7,8,9,10", help="comma-separated layer list")
+    parser.add_argument("--layers", type=str, default="1,2,3,4", help="comma-separated layer list")
     parser.add_argument("--epoch", type=int, default=40, help="training epochs for each run")
     parser.add_argument("--data", type=str, default="yelp", help="dataset name for Main.py")
     parser.add_argument("--gpu", type=str, default="0", help="gpu id passed to Main.py")
-    parser.add_argument("--output", type=str, default="rmTrans.csv", help="output csv file name")
+    parser.add_argument("--output", type=str, default="withTrans.csv", help="output csv file name")
     parser.add_argument(
         "--python",
         type=str,
@@ -77,7 +77,8 @@ def parse_metrics(output_text: str):
 
 
 def run_one(project_root: Path, python_bin: str, layer: int, repeat_idx: int, epoch: int, data: str, gpu: str):
-    save_name = f"rmTrans_l{layer}_r{repeat_idx}"
+    save_name = f"withTrans_l{layer}_r{repeat_idx}"
+
     cmd = [
         python_bin,
         "-u",
@@ -85,7 +86,7 @@ def run_one(project_root: Path, python_bin: str, layer: int, repeat_idx: int, ep
         "--block_num",
         str(layer),
         "-rmTrans",
-        "true",
+        "false",   # ✅ 关键改动
         "--save_path",
         save_name,
         "--epoch",
